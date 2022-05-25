@@ -8,12 +8,12 @@ Dependencies are included in the project, all you need:
 
 2- Setup installation directory in Environment Variables in Path:
               
-              1- Control Panel 
+              1-Control Panel 
   
               2-Search for Environment Variables 
   
-              3- in Environment Variables select Path and click on Edit 
+              3-In Environment Variables select Path and click on Edit 
   
-              4- New 
+              4-click on New 
   
-              5- paste bin directory (the path of bin directory will be for example: C:\opencv\build\x64\vc15\bin )
+              5-Paste bin directory (the path of bin directory will be for example: C:\opencv\build\x64\vc15\bin )
