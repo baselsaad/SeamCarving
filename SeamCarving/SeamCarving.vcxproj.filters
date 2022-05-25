@@ -29,5 +29,10 @@
     <None Include="Dependencies\OpenCV\lib\OpenCVModules.cmake" />
     <None Include="Dependencies\OpenCV\lib\OpenCVModules-debug.cmake" />
     <None Include="Dependencies\OpenCV\lib\OpenCVModules-release.cmake" />
+    <None Include="Images\owl.ppm" />
+    <None Include="Images\owl2.pgm" />
+    <None Include="Images\owl2.ppm" />
+    <None Include="Images\small1.ppm" />
+    <None Include="Images\small2.ppm" />
   </ItemGroup>
 </Project>
