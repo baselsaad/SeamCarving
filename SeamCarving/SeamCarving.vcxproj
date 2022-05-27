@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="src\SeamCarving.cpp" />
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\OpenCV\lib\opencv_world455.lib" />
@@ -180,6 +181,7 @@
   <ItemGroup>
     <ClInclude Include="src\RGB.h" />
     <ClInclude Include="src\SeamCarving.h" />
+    <ClInclude Include="src\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="bin\x64\Release\4k.jpg" />

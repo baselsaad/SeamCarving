@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "SeamCarving.h"
+#include "Timer.h"
 
 #define END 99
 #define START 1
@@ -21,9 +22,12 @@ void Start() {
 		std::cout << "How many times do you want do to reduce?";
 		std::cin >> iteration;
 
-		//TODO: Fix
-		SeamCarving seamCarving(filename,  iteration);
+		Timer timer;
+		timer.StartTimer();
+		SeamCarving seamCarving(filename, iteration);
 		seamCarving.Run(iteration);
+		timer.StopTimer();
+		std::cout << "Finished in: " << timer.ElapsedTimeInMili() << " ms" << std::endl;
 	}
 	else {
 		std::cout << "Programm will close..." << std::endl;

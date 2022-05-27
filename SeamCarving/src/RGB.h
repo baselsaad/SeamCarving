@@ -1,19 +1,19 @@
 #pragma once
 #include <iostream>
-
+#include <opencv2/opencv.hpp>
 
 
 struct Pixel {
-	uint8_t r, g, b;
-	
+	int r, g, b;
 
 public:
 	Pixel(uint8_t r, uint8_t g, uint8_t b)
 		: r(r), g(g), b(b)
 	{
 	}
-	Pixel(const Pixel& copy)
-		: r(copy.r), g(copy.g), b(copy.b)
+
+	Pixel(const cv::Vec3b& vec)
+		: r(vec[2]), g(vec[1]), b(vec[0])
 	{
 		std::cout << "Copied" << std::endl;
 	}
@@ -29,7 +29,6 @@ public:
 	}
 
 public:
-
 	void PowerTo(const int& p) {
 		r = std::pow(r, p);
 		g = std::pow(g, p);
@@ -40,15 +39,38 @@ public:
 		return r + g + b;
 	}
 
-	bool isEmpty() {
+	bool IsEmpty() {
 		return r == 0 && g == 0 && b == 0;
 	}
 
+	const bool IsEmpty() const {
+		return r == 0 && g == 0 && b == 0;
+	}
+
+	void Clear() {
+		this->r = 0;
+		this->g = 0;
+		this->b = 0;
+	}
+
+	cv::Vec3b GetVec3b() const {
+		cv::Vec3b vec;
+		vec[2] = this->r;
+		vec[1] = this->g;
+		vec[0] = this->b;
+
+		return vec;
+	}
+
+	std::string toString() {
+		return "[" + std::to_string(r) + "," + std::to_string(g) + ", " + std::to_string(b) + "]";
+	}
 
 	//-----------------------Operator--------------------------------------
 
 	friend std::ostream& operator<<(std::ostream& stream, const Pixel& pixel) {
-		stream << "[" << (short)pixel.r << ", " << (short)pixel.g << ", " << (short)pixel.b << "]";
+		stream << "[";
+		stream << (short)pixel.r << ", " << (short)pixel.g << ", " << (short)pixel.b << "]";
 		return stream;
 	}
 
@@ -61,6 +83,7 @@ public:
 	}
 
 	Pixel& operator= (const Pixel& other) noexcept {
+		std::cout << "Copied" << std::endl;
 		this->r = other.r;
 		this->g = other.g;
 		this->b = other.b;
@@ -69,7 +92,7 @@ public:
 	}
 
 	Pixel& operator= (Pixel&& other) noexcept {
-		std::cout << "Moved" << std::endl;
+		//std::cout << "Moved" << std::endl;
 
 		if (this != &other) {
 			this->r = other.r;
@@ -84,8 +107,6 @@ public:
 		return *this;
 	}
 
-	
-
 };
 
-static Pixel NULL_PIXEL = { 0,0,0 };
+static const Pixel NULL_PIXEL = { 0,0,0 };
