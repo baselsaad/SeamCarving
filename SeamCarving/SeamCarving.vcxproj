@@ -122,9 +122,10 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;PROJECT_PATH=R"($(SolutionDir)Images\)";CONFIGURATION=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\OpenCV\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,9 +140,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;;PROJECT_PATH=R"($(SolutionDir)Images\)";CONFIGURATION=1</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\OpenCV\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,13 +155,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\seam-carving.cpp" />
+    <ClCompile Include="src\SeamCarving.cpp" />
+    <ClCompile Include="src\Application.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\OpenCV\lib\opencv_world455.lib" />
     <Library Include="Dependencies\OpenCV\lib\opencv_world455d.lib" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\x64\Release\SeamCarving.exe" />
+    <None Include="bin\x64\Release\SeamCarving.pdb" />
+    <None Include="bin\x64\Release\small1.ppm" />
     <None Include="Dependencies\OpenCV\lib\OpenCVConfig-version.cmake" />
     <None Include="Dependencies\OpenCV\lib\OpenCVConfig.cmake" />
     <None Include="Dependencies\OpenCV\lib\OpenCVModules-debug.cmake" />
@@ -170,6 +176,18 @@
     <None Include="Images\owl2.ppm" />
     <None Include="Images\small1.ppm" />
     <None Include="Images\small2.ppm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\RGB.h" />
+    <ClInclude Include="src\SeamCarving.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bin\x64\Release\4k.jpg" />
+    <Image Include="bin\x64\Release\red.jpg" />
+    <Image Include="bin\x64\Release\result.jpg" />
+    <Image Include="Images\4k.jpg" />
+    <Image Include="Images\out.jpg" />
+    <Image Include="Images\red.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

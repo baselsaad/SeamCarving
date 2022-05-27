@@ -15,7 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\seam-carving.cpp">
+    <ClCompile Include="src\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SeamCarving.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -34,5 +37,36 @@
     <None Include="Images\owl2.ppm" />
     <None Include="Images\small1.ppm" />
     <None Include="Images\small2.ppm" />
+    <None Include="bin\x64\Release\small1.ppm" />
+    <None Include="bin\x64\Release\SeamCarving.exe" />
+    <None Include="bin\x64\Release\SeamCarving.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\SeamCarving.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RGB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\red.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\4k.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\out.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bin\x64\Release\4k.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bin\x64\Release\red.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bin\x64\Release\result.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
