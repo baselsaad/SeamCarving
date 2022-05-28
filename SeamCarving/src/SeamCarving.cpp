@@ -70,28 +70,24 @@ void SeamCarving::OpenImage(const std::string& windowTitle, const cv::Mat& image
 void SeamCarving::Run(const int& iterations) throw(std::runtime_error)
 {
 	CheckInputs();
-	//OpenImage("Original", m_ImageBuffer);
 	RedPixels();
 
 	int width = m_Width;
+
 	for (int i = 0; i < iterations; i++) {
-		LocalEnergy(width - i);
-		TotalEnergy(width - i);
-		std::vector<int> seamPath = FindOptimalPath(width - i);
-
-		for (int& i : seamPath) {
-			std::cout << i << std::endl;
-		}
-
-		Carving(width - i, seamPath);
+		LocalEnergy(width);
+		TotalEnergy(width);
+		std::vector<int> seamPath = FindOptimalPath(width);
+		Carving(width, seamPath);
+		width--;
 	}
 
 	ConvertVectorToMat(m_PixelBuffer, m_ImageBuffer, width);
-
+	
 #if  CONFIGURATION == DEBUG
-	bool success = cv::imwrite(PROJECT_PATH + std::string("out.jpg"), m_ImageBuffer);
+	bool success = cv::imwrite(PROJECT_PATH + std::string("out.jpg"), m_ImageBuffer.colRange(0, width));
 #else
-	bool success = cv::imwrite(std::string("out.jpg"), m_ImageBuffer);
+	bool success = cv::imwrite(std::string("out.jpg"), m_ImageBuffer.colRange(0, width));
 #endif
 
 	if (!success) {

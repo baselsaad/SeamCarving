@@ -28,6 +28,7 @@ void Start() {
 		seamCarving.Run(iteration);
 		timer.StopTimer();
 		std::cout << "Finished in: " << timer.ElapsedTimeInMili() << " ms" << std::endl;
+		std::cout << "Finished in: " << timer.ElapsedTimeInSecound() << " s" << std::endl;
 	}
 	else {
 		std::cout << "Programm will close..." << std::endl;
