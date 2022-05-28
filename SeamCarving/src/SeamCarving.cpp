@@ -29,7 +29,7 @@ SeamCarving::~SeamCarving()
 {
 }
 
-void SeamCarving::CheckInputs() throw(std::runtime_error)
+void SeamCarving::CheckInputs() 
 {
 	if (m_ImagePath.empty()) {
 		throw std::runtime_error("Error: Can't load the Image, Make sure you gave the correct path and the image is valid");
@@ -67,7 +67,7 @@ void SeamCarving::OpenImage(const std::string& windowTitle, const cv::Mat& image
 	cv::waitKey(0);
 }
 
-void SeamCarving::Run(const int& iterations) throw(std::runtime_error)
+void SeamCarving::Run(const int& iterations) 
 {
 	CheckInputs();
 	RedPixels();
