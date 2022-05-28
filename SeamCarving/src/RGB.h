@@ -5,20 +5,26 @@
 
 struct Pixel {
 	int r, g, b;
-
+	mutable bool Empty = true;
 public:
-	Pixel(uint8_t r, uint8_t g, uint8_t b)
-		: r(r), g(g), b(b)
+	Pixel(const uint8_t& r, const uint8_t& g, const uint8_t& b)
+		: r(r), g(g), b(b), Empty(false)
+	{
+	}
+
+	Pixel(const uint8_t& r, const uint8_t& g, const uint8_t& b,const bool& empty)
+		: r(r), g(g), b(b), Empty(empty)
 	{
 	}
 
 	Pixel(const cv::Vec3b& vec)
-		: r(vec[2]), g(vec[1]), b(vec[0])
+		: r(vec[2]), g(vec[1]), b(vec[0]), Empty(false)
 	{
-		std::cout << "Copied" << std::endl;
+		printf("Copied\n");
 	}
 
 	Pixel(Pixel&& pixel) noexcept {
+		printf("Moved\n");
 		r = pixel.r;
 		g = pixel.g;
 		b = pixel.b;
@@ -29,22 +35,20 @@ public:
 	}
 
 public:
-	void PowerTo(const int& p) {
-		r = std::pow(r, p);
-		g = std::pow(g, p);
-		b = std::pow(b, p);
+	__forceinline uint32_t PowerTo(const int& p) {
+		return std::pow(r, p) + std::pow(g, p) + std::pow(b, p);
 	}
 
 	int SumOfAllColor() {
 		return r + g + b;
 	}
 
-	bool IsEmpty() {
-		return r == 0 && g == 0 && b == 0;
+	__forceinline bool& IsEmpty() {
+		return Empty;
 	}
 
-	const bool IsEmpty() const {
-		return r == 0 && g == 0 && b == 0;
+	__forceinline const bool& IsEmpty() const {
+		return Empty;
 	}
 
 	void Clear() {
@@ -62,8 +66,24 @@ public:
 		return vec;
 	}
 
+	void SetEmpty(const bool& b) const {
+		Empty = b;
+	}
+
 	std::string toString() {
 		return "[" + std::to_string(r) + "," + std::to_string(g) + ", " + std::to_string(b) + "]";
+	}
+
+
+
+public:
+	static __forceinline uint32_t DiffColor(const Pixel& a, const Pixel& b) {
+		//because std::pow take much time to calculate 
+		return PowerToTwo(a.r - b.r) + PowerToTwo(a.g - b.g) + PowerToTwo(a.b - b.b);
+	}
+
+	static __forceinline uint32_t PowerToTwo(const int& number) {
+		return (number * number);
 	}
 
 	//-----------------------Operator--------------------------------------
@@ -74,16 +94,13 @@ public:
 		return stream;
 	}
 
-	friend Pixel operator- (const Pixel& pixel, const Pixel& other) {
-		Pixel temp(0, 0, 0);
-		temp.r = pixel.r - other.r;
-		temp.g = pixel.g - other.g;
-		temp.b = pixel.b - other.b;
-		return temp;
+	__forceinline Pixel operator- (const Pixel& other) const {
+		return Pixel(r - other.r, g - other.g, b - other.b);
 	}
 
 	Pixel& operator= (const Pixel& other) noexcept {
-		std::cout << "Copied" << std::endl;
+		printf("Copied\n");
+
 		this->r = other.r;
 		this->g = other.g;
 		this->b = other.b;
@@ -92,7 +109,7 @@ public:
 	}
 
 	Pixel& operator= (Pixel&& other) noexcept {
-		//std::cout << "Moved" << std::endl;
+		//printf("Moved\n");
 
 		if (this != &other) {
 			this->r = other.r;
@@ -109,4 +126,5 @@ public:
 
 };
 
-static const Pixel NULL_PIXEL = { 0,0,0 };
+static Pixel NULL_PIXEL(0,0,0,true);
+

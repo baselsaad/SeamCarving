@@ -189,6 +189,7 @@
     <Image Include="bin\x64\Release\result.jpg" />
     <Image Include="Images\4k.jpg" />
     <Image Include="Images\out.jpg" />
+    <Image Include="Images\owl.jpg" />
     <Image Include="Images\red.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

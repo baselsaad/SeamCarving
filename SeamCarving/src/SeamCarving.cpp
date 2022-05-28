@@ -1,4 +1,5 @@
 #include "SeamCarving.h"
+#include "Timer.h"
 
 // Run the App
 #if CONFIGURATION == DEBUG
@@ -11,6 +12,7 @@ SeamCarving::SeamCarving(const std::string& imagePath, const int& iterations)
 	m_Width = m_ImageBuffer.cols;
 	// Allocate Enough memory at the beginng to avoid resizing and copying
 	m_PixelBuffer.reserve(m_Height * m_Width);
+	m_Energy = std::vector<int>(m_Height * m_Width);
 }
 #else
 SeamCarving::SeamCarving(const std::string& imagePath, const int& iterations)
@@ -22,6 +24,7 @@ SeamCarving::SeamCarving(const std::string& imagePath, const int& iterations)
 	m_Width = m_ImageBuffer.cols;
 	// Allocate Enough memory at the beginng to avoid resizing and copying
 	m_PixelBuffer.reserve(m_Height * m_Width);
+	m_Energy = std::vector<int>(m_Height * m_Width);
 }
 #endif
 
@@ -29,7 +32,7 @@ SeamCarving::~SeamCarving()
 {
 }
 
-void SeamCarving::CheckInputs() 
+void SeamCarving::CheckInputs()
 {
 	if (m_ImagePath.empty()) {
 		throw std::runtime_error("Error: Can't load the Image, Make sure you gave the correct path and the image is valid");
@@ -45,7 +48,7 @@ void SeamCarving::RedPixels()
 	for (int y = 0; y < m_Height; y++) {
 		for (int x = 0; x < m_Width; x++) {
 			auto& pixels = m_ImageBuffer.at<cv::Vec3b>(y, x);
-			m_PixelBuffer.emplace_back(pixels[2], pixels[1], pixels[0]);
+			m_PixelBuffer.emplace_back(pixels[2], pixels[1], pixels[0], false);
 		}
 	}
 }
@@ -67,13 +70,12 @@ void SeamCarving::OpenImage(const std::string& windowTitle, const cv::Mat& image
 	cv::waitKey(0);
 }
 
-void SeamCarving::Run(const int& iterations) 
+void SeamCarving::Run(const int& iterations)
 {
 	CheckInputs();
 	RedPixels();
 
 	int width = m_Width;
-
 	for (int i = 0; i < iterations; i++) {
 		LocalEnergy(width);
 		TotalEnergy(width);
@@ -83,7 +85,7 @@ void SeamCarving::Run(const int& iterations)
 	}
 
 	ConvertVectorToMat(m_PixelBuffer, m_ImageBuffer, width);
-	
+
 #if  CONFIGURATION == DEBUG
 	bool success = cv::imwrite(PROJECT_PATH + std::string("out.jpg"), m_ImageBuffer.colRange(0, width));
 #else
@@ -97,6 +99,8 @@ void SeamCarving::Run(const int& iterations)
 
 void SeamCarving::ConvertVectorToMat(std::vector<Pixel>& src, cv::Mat& dest, const int& width)
 {
+	// do not want to modify the Pixels before the Seam-Pos because they are allready right
+
 	for (int y = 0; y < m_Height; y++) {
 		for (int x = 0; x < width; x++) {
 			cv::Vec3b currentPixel;
@@ -109,19 +113,14 @@ void SeamCarving::ConvertVectorToMat(std::vector<Pixel>& src, cv::Mat& dest, con
 	}
 }
 
-
-
 void SeamCarving::LocalEnergy(const int& width)
 {
-	m_Energy.reserve(m_Height * width);
-
+	int i = 0;
 	for (int y = 0; y < m_Height; y++) {
 		for (int x = 0; x < width; x++) {
 			const Pixel* currentPixel = GetPixel(y, x, width);
-			// x - 1, will get the Pixel before the Current one
-			const Pixel* leftPixel = GetPixel(y, x - 1, width);
-			// y - 1, will get the Pixel Above the Current one
-			const Pixel* upperPixel = GetPixel(y - 1, x, width);
+			const Pixel* leftPixel = GetPixel(y, x - 1, width);// x - 1, will get the Pixel before the Current one
+			const Pixel* upperPixel = GetPixel(y - 1, x, width);// y - 1, will get the Pixel Above the Current one
 
 			uint32_t currentAndLeft = ColorDifference(*currentPixel, *leftPixel);
 			uint32_t currentAndUpper = ColorDifference(*currentPixel, *upperPixel);
@@ -134,7 +133,8 @@ void SeamCarving::LocalEnergy(const int& width)
 				currentAndUpper = 0;
 			}
 
-			m_Energy.emplace_back(currentAndLeft + currentAndUpper);
+			m_Energy[i] = currentAndLeft + currentAndUpper;
+			i++;
 		}
 	}
 }
@@ -147,20 +147,19 @@ void SeamCarving::TotalEnergy(const int& width)
 			int aboveCenter = GetEnergyFromArray(y - 1, x, width);
 			int aboveRight = GetEnergyFromArray(y - 1, std::min(x + 1, width - 1), width);
 
-			m_Energy[GetIndex(y, x, width)] += std::min(std::min(aboveCenter, aboveLeft), aboveRight);
+			m_Energy[GetIndex(y, x, m_Width)] += std::min(std::min(aboveCenter, aboveLeft), aboveRight);
 		}
 	}
 }
-
 
 int SeamCarving::GetMinimumInLastColum(const int& width)
 {
 	int y = m_Height - 1; // last colum
 
 	int minimumIndex = 0;
-	int minimumValue = m_Energy[GetIndex(y, 0, width)];
+	int minimumValue = m_Energy[GetIndex(y, 0, m_Width)];
 	for (int x = 1; x < width; x++) {
-		const int& nextEnergy = m_Energy[GetIndex(y, x, width)];
+		const int& nextEnergy = m_Energy[GetIndex(y, x, m_Width)];
 
 		if (nextEnergy < minimumValue) {
 			minimumIndex = x;
@@ -173,9 +172,11 @@ int SeamCarving::GetMinimumInLastColum(const int& width)
 
 std::vector<int> SeamCarving::FindOptimalPath(const int& width)
 {
-	std::vector<int> seamPath(m_Height);
+	std::vector<int> seamPath;
+	seamPath.reserve(m_Height);
+
 	int indexOfMin = GetMinimumInLastColum(width);
-	seamPath[m_Height - 1] = indexOfMin;
+	seamPath.emplace_back(indexOfMin);
 
 	int offset = 0;
 
@@ -196,16 +197,16 @@ std::vector<int> SeamCarving::FindOptimalPath(const int& width)
 
 		indexOfMin += offset;
 		indexOfMin = std::min(std::max(indexOfMin, 0), width - 1); //Edge Case
-		seamPath[y] = indexOfMin;
+		seamPath.emplace_back(indexOfMin);
 	}
-	m_Energy.clear();
 	return seamPath;
 }
 
-void SeamCarving::Carving(const int& width, const std::vector<int>& seam)
+void SeamCarving::Carving(const int& width, const std::vector<int>& seamPath)
 {
 	for (int y = 0; y < m_Height; y++) {
-		for (int x = seam.at(y); x < width - 1; x++) {
+		// The First X-Pos in Image is in The last Index in SeamPath, thats way we beginn from the bottom of the vector
+		for (int x = seamPath.at(m_Height - y - 1); x < width - 1; x++) {
 			const int& toRemovePixel = GetIndex(y, x, m_Width);
 			const int& neighborPosition = GetIndex(y, x + 1, m_Width);
 
@@ -216,14 +217,12 @@ void SeamCarving::Carving(const int& width, const std::vector<int>& seam)
 	}
 }
 
-uint32_t SeamCarving::ColorDifference(const Pixel& a, const Pixel& b)
+__forceinline uint32_t SeamCarving::ColorDifference(const Pixel& a, const Pixel& b)
 {
-	Pixel result = a - b;
-	result.PowerTo(2);
-	return result.SumOfAllColor();
+	return Pixel::DiffColor(a, b);
 }
 
-const Pixel* SeamCarving::GetPixel(const int& y, const int& x, const int& width) const {
+Pixel* SeamCarving::GetPixel(const int& y, const int& x, const int& width) {
 	if (x < 0 || y < 0 || x >= width || y >= m_Height) {
 		return &NULL_PIXEL;
 	}
@@ -238,7 +237,7 @@ int SeamCarving::GetEnergyFromArray(const int& y, const int& x, const int& width
 		return NOT_EXSIST;
 	}
 	else {
-		return m_Energy[GetIndex(y, x, width)];
+		return m_Energy[GetIndex(y, x, m_Width)];
 	}
 }
 
@@ -246,3 +245,5 @@ __forceinline int SeamCarving::GetIndex(const int& y, const int& x, const int& w
 {
 	return (y * width + x);
 }
+
+
