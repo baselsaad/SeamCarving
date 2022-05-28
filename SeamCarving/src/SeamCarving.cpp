@@ -99,8 +99,6 @@ void SeamCarving::Run(const int& iterations)
 
 void SeamCarving::ConvertVectorToMat(std::vector<Pixel>& src, cv::Mat& dest, const int& width)
 {
-	// do not want to modify the Pixels before the Seam-Pos because they are allready right
-
 	for (int y = 0; y < m_Height; y++) {
 		for (int x = 0; x < width; x++) {
 			cv::Vec3b currentPixel;
