@@ -25,7 +25,7 @@ public:
 
 
 public:
-	void Run(const int& iterations)throw(std::runtime_error);
+	void Run(const int& iterations);
 	void PrintAllPixels();
 
 private:
