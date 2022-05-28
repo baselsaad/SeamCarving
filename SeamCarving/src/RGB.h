@@ -12,7 +12,7 @@ public:
 	{
 	}
 
-	Pixel(const uint8_t& r, const uint8_t& g, const uint8_t& b,const bool& empty)
+	Pixel(const uint8_t& r, const uint8_t& g, const uint8_t& b, const bool& empty)
 		: r(r), g(g), b(b), Empty(empty)
 	{
 	}
@@ -35,10 +35,6 @@ public:
 	}
 
 public:
-	__forceinline uint32_t PowerTo(const int& p) {
-		return std::pow(r, p) + std::pow(g, p) + std::pow(b, p);
-	}
-
 	int SumOfAllColor() {
 		return r + g + b;
 	}
@@ -58,12 +54,7 @@ public:
 	}
 
 	cv::Vec3b GetVec3b() const {
-		cv::Vec3b vec;
-		vec[2] = this->r;
-		vec[1] = this->g;
-		vec[0] = this->b;
-
-		return vec;
+		return cv::Vec3b(b, g, r);
 	}
 
 	void SetEmpty(const bool& b) const {
@@ -74,15 +65,13 @@ public:
 		return "[" + std::to_string(r) + "," + std::to_string(g) + ", " + std::to_string(b) + "]";
 	}
 
-
-
 public:
-	static __forceinline uint32_t DiffColor(const Pixel& a, const Pixel& b) {
-		//because std::pow take much time to calculate 
+	__forceinline static uint32_t DiffColor(const Pixel& a, const Pixel& b) {
+		// Because std::pow takes much time to calculate 
 		return PowerToTwo(a.r - b.r) + PowerToTwo(a.g - b.g) + PowerToTwo(a.b - b.b);
 	}
 
-	static __forceinline uint32_t PowerToTwo(const int& number) {
+	__forceinline static uint32_t PowerToTwo(const int& number) {
 		return (number * number);
 	}
 
@@ -126,5 +115,5 @@ public:
 
 };
 
-static Pixel NULL_PIXEL(0,0,0,true);
+static Pixel NULL_PIXEL(0, 0, 0, true);
 
