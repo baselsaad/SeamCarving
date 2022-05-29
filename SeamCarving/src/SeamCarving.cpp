@@ -41,6 +41,10 @@ void SeamCarving::CheckInputs()
 	if (m_ImageBuffer.empty()) {
 		throw std::runtime_error("\nError: Can't load and read the Image");
 	}
+
+	if (m_Iterations < 0) {
+		throw std::runtime_error("\nError: Iterations musst be 0 or higher!!");
+	}
 }
 
 void SeamCarving::RedPixels()
@@ -93,7 +97,8 @@ void SeamCarving::Run(const int& iterations)
 #endif
 
 	if (!success) {
-		throw std::runtime_error("Error: Could not Write the File Correcly!");
+		std::cerr << "Error: Could not Write the File Correcly!" << std::endl;
+		exit(EXIT_SUCCESS);
 	}
 }
 
