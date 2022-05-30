@@ -146,9 +146,9 @@ void SeamCarving::TotalEnergy(const int& width)
 {
 	for (int y = 1; y < m_Height; y++) {
 		for (int x = 0; x < width; x++) {
-			int aboveLeft = GetEnergyFromArray(y - 1, std::max(x - 1, 0), width);
-			int aboveCenter = GetEnergyFromArray(y - 1, x, width);
-			int aboveRight = GetEnergyFromArray(y - 1, std::min(x + 1, width - 1), width);
+			const int& aboveLeft = GetEnergyFromArray(y - 1, std::max(x - 1, 0), width);
+			const int& aboveCenter = GetEnergyFromArray(y - 1, x, width);
+			const int& aboveRight = GetEnergyFromArray(y - 1, std::min(x + 1, width - 1), width);
 
 			m_Energy[GetIndex(y, x, m_Width)] += std::min(std::min(aboveCenter, aboveLeft), aboveRight);
 		}
