@@ -108,9 +108,9 @@ void SeamCarving::ConvertVectorToMat(std::vector<Pixel>& src, cv::Mat& dest, con
 		for (int x = 0; x < width; x++) {
 			cv::Vec3b currentPixel;
 			// rgb to bgr
-			currentPixel[0] = src[GetIndex(y, x, m_Width)].b;
-			currentPixel[1] = src[GetIndex(y, x, m_Width)].g;
-			currentPixel[2] = src[GetIndex(y, x, m_Width)].r;
+			currentPixel[0] = src[GetIndex(y, x, m_Width)].B;
+			currentPixel[1] = src[GetIndex(y, x, m_Width)].G;
+			currentPixel[2] = src[GetIndex(y, x, m_Width)].R;
 			dest.at<cv::Vec3b>(y, x) = currentPixel;
 		}
 	}
