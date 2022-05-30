@@ -2,7 +2,7 @@
  Seam Carving Algorithm in C++ (win64)
  
 # Building and running
-Dependencies are included in the project, all you need:
+Dependencies are included in the project, all you need #(Before opening the project):
 
 1- Download OpenCV – 4.5.5 for windows from: https://opencv.org/releases/
 
