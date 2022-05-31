@@ -61,7 +61,7 @@ void SeamCarving::PrintAllPixels()
 {
 	for (int y = 0; y < m_Height; y++) {
 		for (int x = 0; x < m_Width; x++) {
-			std::cout << *GetPixel(y, x, m_Width) << " ";
+			std::cout << GetPixel(y, x, m_Width) << " ";
 		}
 		std::cout << "\n";
 	}
@@ -121,18 +121,18 @@ void SeamCarving::LocalEnergy(const int& width)
 	int i = 0;
 	for (int y = 0; y < m_Height; y++) {
 		for (int x = 0; x < width; x++) {
-			const Pixel* currentPixel = GetPixel(y, x, width);
-			const Pixel* leftPixel = GetPixel(y, x - 1, width);// x - 1, will get the Pixel before the Current one
-			const Pixel* upperPixel = GetPixel(y - 1, x, width);// y - 1, will get the Pixel Above the Current one
+			const Pixel& currentPixel = GetPixel(y, x, width);
+			const Pixel& leftPixel = GetPixel(y, x - 1, width);// x - 1, will get the Pixel before the Current one
+			const Pixel& upperPixel = GetPixel(y - 1, x, width);// y - 1, will get the Pixel Above the Current one
 
-			uint32_t currentAndLeft = ColorDifference(*currentPixel, *leftPixel);
-			uint32_t currentAndUpper = ColorDifference(*currentPixel, *upperPixel);
+			uint32_t currentAndLeft = ColorDifference(currentPixel, leftPixel);
+			uint32_t currentAndUpper = ColorDifference(currentPixel, upperPixel);
 
-			if (leftPixel->IsEmpty()) {
+			if (leftPixel.IsEmpty()) {
 				currentAndLeft = 0;
 			}
 
-			if (upperPixel->IsEmpty()) {
+			if (upperPixel.IsEmpty()) {
 				currentAndUpper = 0;
 			}
 
@@ -225,19 +225,19 @@ __forceinline uint32_t SeamCarving::ColorDifference(const Pixel& a, const Pixel&
 	return Pixel::DiffColor(a, b);
 }
 
-Pixel* SeamCarving::GetPixel(const int& y, const int& x, const int& width) {
+const Pixel& SeamCarving::GetPixel(const int& y, const int& x, const int& width) const{
 	if (x < 0 || y < 0 || x >= width || y >= m_Height) {
-		return &NULL_PIXEL;
+		return NULL_PIXEL;
 	}
 	else {
-		return &m_PixelBuffer[GetIndex(y, x, m_Width)];
+		return m_PixelBuffer[GetIndex(y, x, m_Width)];
 	}
 }
 
-int SeamCarving::GetEnergyFromArray(const int& y, const int& x, const int& width)
+const int& SeamCarving::GetEnergyFromArray(const int& y, const int& x, const int& width) const
 {
 	if (x < 0 || y < 0 || x >= width || y >= m_Height) {
-		return NOT_EXSIST;
+		return NOT_EXIST;
 	}
 	else {
 		return m_Energy[GetIndex(y, x, m_Width)];

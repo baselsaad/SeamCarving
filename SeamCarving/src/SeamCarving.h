@@ -15,7 +15,7 @@
 #define DEBUG 0
 #define RELEASE 1
 
-#define NOT_EXSIST -1
+
 
 class SeamCarving
 {
@@ -45,9 +45,9 @@ private:
 	* Get Index of Pixel in Array when we have its x and y values
 	*/
 	__forceinline int GetIndex(const int& y, const int& x, const int& matrixWidth) const;
-	Pixel* GetPixel(const int& x, const int& y, const int& width) ;
-	__forceinline uint32_t ColorDifference(const Pixel& a, const Pixel& b) ;
-	int GetEnergyFromArray(const int& x, const int& y, const int& width);
+	const Pixel& GetPixel(const int& x, const int& y, const int& width) const;
+	__forceinline uint32_t ColorDifference(const Pixel& a, const Pixel& b);
+	const int& GetEnergyFromArray(const int& x, const int& y, const int& width) const;
 
 private:
 	std::string m_ImagePath;
@@ -60,6 +60,7 @@ private:
 	cv::Mat m_ImageBuffer;
 
 	std::vector<Pixel> m_PixelBuffer;
+	static const int NOT_EXIST = -1;
 };
 
 
