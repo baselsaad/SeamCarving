@@ -4,8 +4,9 @@
 
 
 struct Pixel {
-	int R, G, B;
+	uint8_t R, G, B;
 	mutable bool Empty = true;
+
 public:
 	Pixel(const uint8_t& r, const uint8_t& g, const uint8_t& b)
 		: R(r), G(g), B(b), Empty(false)
@@ -23,7 +24,16 @@ public:
 		printf("Copied\n");
 	}
 
-	Pixel(Pixel&& pixel) noexcept {
+	Pixel(const Pixel& other)
+		: R(other.R)
+		, G(other.G)
+		, B(other.B)
+	{
+		printf("Copied\n");
+	}
+
+	Pixel(Pixel&& pixel) noexcept
+	{
 		printf("Moved\n");
 		R = pixel.R;
 		G = pixel.G;
@@ -35,59 +45,71 @@ public:
 	}
 
 public:
-	int SumOfAllColor() {
+	int SumOfAllColor()
+	{
 		return R + G + B;
 	}
 
-	__forceinline bool& IsEmpty() {
+	__forceinline bool& IsEmpty()
+	{
 		return Empty;
 	}
 
-	__forceinline const bool& IsEmpty() const {
+	__forceinline const bool& IsEmpty() const
+	{
 		return Empty;
 	}
 
-	void Clear() {
+	void Clear()
+	{
 		this->R = 0;
 		this->G = 0;
 		this->B = 0;
 	}
 
-	cv::Vec3b GetVec3b() const {
+	cv::Vec3b GetVec3b() const
+	{
 		return cv::Vec3b(B, G, R);
 	}
 
-	void SetEmpty(const bool& b) const {
+	void SetEmpty(const bool& b) const
+	{
 		Empty = b;
 	}
 
-	std::string toString() {
+	std::string toString()
+	{
 		return "[" + std::to_string(R) + "," + std::to_string(G) + ", " + std::to_string(B) + "]";
 	}
 
 public:
-	__forceinline static uint32_t DiffColor(const Pixel& a, const Pixel& b) {
+	__forceinline static uint32_t DiffColor(const Pixel& a, const Pixel& b)
+	{
 		// Because std::pow takes much time to calculate 
 		return PowerToTwo(a.R - b.R) + PowerToTwo(a.G - b.G) + PowerToTwo(a.B - b.B);
 	}
 
-	__forceinline static uint32_t PowerToTwo(const int& number) {
+	__forceinline static uint32_t PowerToTwo(const int& number)
+	{
 		return (number * number);
 	}
 
 	//-----------------------Operator--------------------------------------
 
-	friend std::ostream& operator<<(std::ostream& stream, const Pixel& pixel) {
+	friend std::ostream& operator<<(std::ostream& stream, const Pixel& pixel)
+	{
 		stream << "[";
 		stream << (short)pixel.R << ", " << (short)pixel.G << ", " << (short)pixel.B << "]";
 		return stream;
 	}
 
-	__forceinline Pixel operator- (const Pixel& other) const {
+	__forceinline Pixel operator- (const Pixel& other) const
+	{
 		return Pixel(R - other.R, G - other.G, B - other.B);
 	}
 
-	Pixel& operator= (const Pixel& other) noexcept {
+	Pixel& operator= (const Pixel& other) noexcept
+	{
 		printf("Copied\n");
 
 		this->R = other.R;
@@ -97,7 +119,8 @@ public:
 		return *this;
 	}
 
-	Pixel& operator= (Pixel&& other) noexcept {
+	Pixel& operator= (Pixel&& other) noexcept
+	{
 		//printf("Moved\n");
 
 		if (this != &other) {

@@ -56,7 +56,7 @@ private:
 	int m_Width;
 	int m_Height;
 
-	std::vector<int> m_Energy;
+	std::vector<uint8_t> m_Energy;
 	cv::Mat m_ImageBuffer;
 
 	std::vector<Pixel> m_PixelBuffer;

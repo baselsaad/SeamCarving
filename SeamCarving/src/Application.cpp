@@ -8,7 +8,8 @@
 
 static int input = 0;
 
-void Dialog(std::string& filename, int& iteration) {
+void Dialog(std::string& filename, int& iteration) 
+{
 	std::string iterations;
 	std::cout << "Image Name: ";
 	std::cin >> filename;
@@ -19,15 +20,17 @@ void Dialog(std::string& filename, int& iteration) {
 	iteration = std::stoi(iterations.c_str());
 }
 
-void Start() {
+void Start()
+{
 	try {
 		std::string filename;
 		int iteration = 0;
 
-		std::cout << "Start The Programm->" << START << "\nClose The Programm->" << END << "\n->";
+		std::cout << "Start The Program->" << START << "\nClose The Program->" << END << "\n->";
 		std::cin >> input;
 
-		if (input == START) {
+		if (input == START)
+		{
 			Dialog(filename, iteration);
 			Timer timer;
 			timer.StartTimer();
@@ -37,29 +40,34 @@ void Start() {
 			std::cout << "Finished in: " << timer.ElapsedTimeInMili() << " ms" << std::endl;
 			std::cout << "Finished in: " << timer.ElapsedTimeInSecound() << " s" << std::endl;
 		}
-		else {
-			std::cout << "Programm will close..." << std::endl;
-			exit(EXIT_SUCCESS);
+		else
+		{
+			std::cout << "Program will close..." << std::endl;
+			exit(EXIT_FAILURE);
 		}
 	}
-	catch (std::invalid_argument& e) {
+	catch (const std::invalid_argument& e) 
+	{
 		std::cout << "\nError: Please Enter a Number here!!" << std::endl;
 	}
-	catch (std::runtime_error& e) {
+	catch (const std::runtime_error& e) 
+	{
 		std::cout << e.what() << std::endl;
 	}
-	catch (...) {
-		std::cout << "\nError: Programm will close..." << std::endl;
-		exit(EXIT_SUCCESS);
+	catch (...)
+	{
+		std::cout << "\nError: Program will close..." << std::endl;
+		exit(EXIT_FAILURE);
 	}
 }
 
-int main() {
+int main() 
+{
 
-	while (input != END) {
+	while (input != END) 
+	{
 		Start();
 	}
-
 
 	return EXIT_SUCCESS;
 }

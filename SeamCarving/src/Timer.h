@@ -24,4 +24,3 @@ private:
 	mutable std::chrono::time_point<std::chrono::steady_clock> m_End;
 	mutable std::chrono::duration<float> m_Duration;
 };
-
