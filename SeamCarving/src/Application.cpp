@@ -23,7 +23,7 @@ void Dialog(std::string& filename, int& iteration)
 	iteration = std::stoi(iterations.c_str());
 }
 
-void Start()
+int Start()
 {
 	try {
 		std::string filename;
@@ -46,7 +46,7 @@ void Start()
 		else
 		{
 			std::cout << "Program will close..." << std::endl;
-			exit(EXIT_FAILURE);
+			return END;
 		}
 	}
 	catch (const std::invalid_argument& e)
@@ -68,7 +68,7 @@ int main()
 {
 	while (input != END)
 	{
-		Start();
+		input = Start();
 	}
 
 	return EXIT_SUCCESS;

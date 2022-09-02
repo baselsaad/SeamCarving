@@ -8,10 +8,9 @@
 // Run the App
 #if CONFIGURATION == DEBUG
 SeamCarving::SeamCarving(const std::string& imagePath, const int& iterations)
-	: m_ImagePath(PROJECT_PATH + imagePath)
-	, m_Iterations(iterations)
+	: m_ImagePath(PROJECT_PATH + imagePath), m_Iterations(iterations)
 {
-	m_LocalBuffer = stbi_load(imagePath.c_str(), &m_Width, &m_Height, &m_Channels, STBI_rgb);
+	m_LocalBuffer = stbi_load(m_ImagePath.c_str(), &m_Width, &m_Height, &m_Channels, STBI_rgb);
 
 	// Allocate Enough memory at the beginning to avoid resizing and copying
 	m_PixelBuffer.reserve(m_Height * m_Width);
@@ -19,8 +18,7 @@ SeamCarving::SeamCarving(const std::string& imagePath, const int& iterations)
 }
 #else
 SeamCarving::SeamCarving(const std::string& imagePath, const int& iterations)
-	: m_ImagePath(imagePath)
-	, m_Iterations(iterations)
+	: m_ImagePath(imagePath), m_Iterations(iterations)
 {
 	m_LocalBuffer = stbi_load(m_ImagePath.c_str(), &m_Width, &m_Height, &m_Channels, STBI_rgb);
 
@@ -82,7 +80,7 @@ void SeamCarving::WritePixels(const int& width)
 	}
 
 #if CONFIGURATION == DEBUG
-	std::string path = PROJECT_PATH + std::string("new.jpg");
+	std::string path = PROJECT_PATH "out.jpg";
 #else
 	std::string path = "out.jpg";
 #endif
@@ -91,6 +89,8 @@ void SeamCarving::WritePixels(const int& width)
 
 	if (state == 0)
 		std::cout << "Failed\n";
+
+	delete[] result;
 }
 
 void SeamCarving::PrintAllPixels()
