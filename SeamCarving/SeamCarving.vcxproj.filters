@@ -24,6 +24,12 @@
     <ClCompile Include="src\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Dependencies\STB\stb_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\STB\stb_image_write.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\OpenCV\lib\opencv_world455.lib" />
@@ -54,6 +60,12 @@
     <ClInclude Include="src\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Dependencies\STB\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\STB\stb_image_write.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\red.jpg">
@@ -75,6 +87,18 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Images\owl.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\test.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\new.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\4kOut.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\redOut.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

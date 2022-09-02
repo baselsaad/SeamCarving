@@ -1,14 +1,17 @@
 #include <iostream>
+#include <string>
 
 #include "SeamCarving.h"
 #include "Timer.h"
+#include "stb_image.h"
+#include "stb_image_write.h"
 
 #define END 99
 #define START 1
 
 static int input = 0;
 
-void Dialog(std::string& filename, int& iteration) 
+void Dialog(std::string& filename, int& iteration)
 {
 	std::string iterations;
 	std::cout << "Image Name: ";
@@ -46,11 +49,11 @@ void Start()
 			exit(EXIT_FAILURE);
 		}
 	}
-	catch (const std::invalid_argument& e) 
+	catch (const std::invalid_argument& e)
 	{
 		std::cout << "\nError: Please Enter a Number here!!" << std::endl;
 	}
-	catch (const std::runtime_error& e) 
+	catch (const std::runtime_error& e)
 	{
 		std::cout << e.what() << std::endl;
 	}
@@ -61,10 +64,9 @@ void Start()
 	}
 }
 
-int main() 
+int main()
 {
-
-	while (input != END) 
+	while (input != END)
 	{
 		Start();
 	}

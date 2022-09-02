@@ -96,6 +96,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\STB;$(SolutionDir)Dependencies\OpenCV\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -110,6 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\STB;$(SolutionDir)Dependencies\OpenCV\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,16 +124,17 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;PROJECT_PATH=R"($(SolutionDir)Images\)";CONFIGURATION=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;PROJECT_PATH=R"($(SolutionDir)Images\)";CONFIGURATION=0;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\OpenCV\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\STB;$(SolutionDir)Dependencies\OpenCV\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\OpenCV\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_world455d.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,9 +143,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;;PROJECT_PATH=R"($(SolutionDir)Images\)";CONFIGURATION=1</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;PROJECT_PATH=R"($(SolutionDir)Images\)";CONFIGURATION=1;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\OpenCV\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\STB;$(SolutionDir)Dependencies\OpenCV\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -150,11 +153,14 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\OpenCV\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_world455.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Dependencies\STB\stb_image.cpp" />
+    <ClCompile Include="Dependencies\STB\stb_image_write.cpp" />
     <ClCompile Include="src\SeamCarving.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Timer.cpp" />
@@ -179,6 +185,8 @@
     <None Include="Images\small2.ppm" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dependencies\STB\stb_image.h" />
+    <ClInclude Include="Dependencies\STB\stb_image_write.h" />
     <ClInclude Include="src\RGB.h" />
     <ClInclude Include="src\SeamCarving.h" />
     <ClInclude Include="src\Timer.h" />
@@ -188,9 +196,13 @@
     <Image Include="bin\x64\Release\red.jpg" />
     <Image Include="bin\x64\Release\result.jpg" />
     <Image Include="Images\4k.jpg" />
+    <Image Include="Images\4kOut.jpg" />
+    <Image Include="Images\new.jpg" />
     <Image Include="Images\out.jpg" />
     <Image Include="Images\owl.jpg" />
     <Image Include="Images\red.jpg" />
+    <Image Include="Images\redOut.jpg" />
+    <Image Include="Images\test.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

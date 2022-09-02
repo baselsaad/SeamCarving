@@ -1,33 +1,32 @@
 #pragma once
 #include <iostream>
-#include <opencv2/opencv.hpp>
 
 
 struct Pixel {
-	uint8_t R, G, B;
+	uint8_t R, G, B, A;
 	mutable bool Empty = true;
 
 public:
+	Pixel(const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a)
+		: R(r), G(g), B(b), A(a), Empty(false)
+	{
+	}
+
 	Pixel(const uint8_t& r, const uint8_t& g, const uint8_t& b)
-		: R(r), G(g), B(b), Empty(false)
+		: R(r), G(g), B(b), A(0xff), Empty(false)
 	{
 	}
 
-	Pixel(const uint8_t& r, const uint8_t& g, const uint8_t& b, const bool& empty)
-		: R(r), G(g), B(b), Empty(empty)
+	Pixel(const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a, const bool& empty)
+		: R(r), G(g), B(b), A(a), Empty(empty)
 	{
-	}
-
-	Pixel(const cv::Vec3b& vec)
-		: R(vec[2]), G(vec[1]), B(vec[0]), Empty(false)
-	{
-		printf("Copied\n");
 	}
 
 	Pixel(const Pixel& other)
 		: R(other.R)
 		, G(other.G)
 		, B(other.B)
+		, A(other.A)
 	{
 		printf("Copied\n");
 	}
@@ -38,21 +37,18 @@ public:
 		R = pixel.R;
 		G = pixel.G;
 		B = pixel.B;
+		A = pixel.A;
 
 		pixel.R = NULL;
 		pixel.G = NULL;
 		pixel.B = NULL;
+		pixel.A = NULL;
 	}
 
 public:
 	int SumOfAllColor()
 	{
 		return R + G + B;
-	}
-
-	__forceinline bool& IsEmpty()
-	{
-		return Empty;
 	}
 
 	__forceinline const bool& IsEmpty() const
@@ -62,24 +58,10 @@ public:
 
 	void Clear()
 	{
-		this->R = 0;
-		this->G = 0;
-		this->B = 0;
-	}
-
-	cv::Vec3b GetVec3b() const
-	{
-		return cv::Vec3b(B, G, R);
-	}
-
-	void SetEmpty(const bool& b) const
-	{
-		Empty = b;
-	}
-
-	std::string toString()
-	{
-		return "[" + std::to_string(R) + "," + std::to_string(G) + ", " + std::to_string(B) + "]";
+		R = 0;
+		G = 0;
+		B = 0;
+		A = 0;
 	}
 
 public:
@@ -95,7 +77,6 @@ public:
 	}
 
 	//-----------------------Operator--------------------------------------
-
 	friend std::ostream& operator<<(std::ostream& stream, const Pixel& pixel)
 	{
 		stream << "[";
